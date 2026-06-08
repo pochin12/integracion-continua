@@ -1,4 +1,4 @@
-name: CI - Integración Continua
+name: CI - Integración Continua y Entrega
 
 on:
   push:
@@ -25,6 +25,19 @@ jobs:
       - name: 4. Ejecutar pruebas automáticas
         run: pytest tests/ -v
 
-      - name: 5. Notificar resultado
-        if: always()
-        run: echo "Pipeline finalizado con estado ${{ job.status }}"
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+      - name: 1. Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: 2. Construir imagen Docker
+        run: docker build -t integracion-continua .
+
+      - name: 3. Ejecutar contenedor
+        run: docker run integracion-continua
+
+      - name: 4. Confirmar deploy exitoso
+        run: echo "Deploy completado exitosamente en entorno Docker"
