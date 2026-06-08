@@ -1,0 +1,30 @@
+name: CI - Integración Continua
+
+on:
+  push:
+    branches: [ main, feature/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Clonar el repositorio
+        uses: actions/checkout@v3
+
+      - name: 2. Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 3. Instalar dependencias
+        run: pip install pytest
+
+      - name: 4. Ejecutar pruebas automáticas
+        run: pytest tests/ -v
+
+      - name: 5. Notificar resultado
+        if: always()
+        run: echo "Pipeline finalizado con estado ${{ job.status }}"
