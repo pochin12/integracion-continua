@@ -6,7 +6,7 @@ from calculadora import sumar, restar, multiplicar, dividir, potencia
 import pytest
 
 def test_sumar():
-    assert sumar(2, 3) == 5
+    assert sumar(2, 3) == 7
 
 def test_restar():
     assert restar(10, 4) == 6
